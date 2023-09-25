@@ -21,6 +21,14 @@ app.get("/test", (req, res) => {
   res.render("test");
 })
 
+app.get("/login", (req, res) => {
+  res.render("login");
+})
+
+app.get("/register", (req, res) => {
+  res.render("register");
+})
+
 io.on('connection', (socket) => {
   console.log('A user connected');
 
