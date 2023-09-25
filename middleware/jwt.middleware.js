@@ -1,6 +1,6 @@
 // create a middleware function that will check if the user is authenticated
 
-export const auth = (req, res, next) => {
+const auth = (req, res, next) => {
     try {
         // get token from request header
         const token = req.header("x-auth-token");
@@ -23,3 +23,5 @@ export const auth = (req, res, next) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+module.exports = auth;

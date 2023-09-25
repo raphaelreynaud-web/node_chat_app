@@ -3,6 +3,11 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 let ejs = require('ejs');
+const mongoose = require('mongoose');
+const roomsRouter = require('./routes/rooms.route');
+const usersRouter = require('./routes/users.route');
+
+mongoose.connect('mongodb://localhost:27017/chat', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +17,12 @@ app.use(express.static(__dirname + '/public'));
 // view engine setup
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/rooms', roomsRouter);
+app.use('/api/users', usersRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
@@ -27,6 +38,10 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.render("register");
+})
+
+app.get("/room/:room", (req, res) => {
+  res.render("test", { roomName: req.params.room });
 })
 
 io.on('connection', (socket) => {

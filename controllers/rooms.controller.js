@@ -1,20 +1,14 @@
 // CRUD for creating rooms
 
-const Room = require('../models/room.model');
+const Room = require('../models/rooms.model');
 
 // Create and Save a new Room
 
 exports.create = (req, res) => {
     // Validate request
-    if(!req.body.name) {
-        return res.status(400).send({
-            message: "Room name can not be empty"
-        });
-    }
-
     // Create a Room
     const room = new Room({
-        name: req.body.name
+        users : [req.body.userId]
     });
 
     // Save Room in the database

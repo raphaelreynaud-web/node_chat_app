@@ -1,7 +1,7 @@
 // create mongoose user controller with just login and register
 
 const User = require('../models/users.model');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res) => {

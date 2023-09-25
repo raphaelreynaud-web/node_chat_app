@@ -15,17 +15,51 @@
             <h3>Name</h3>
         </div>
         <div class="message__body">
-            <div class="message__item">
-                <p>Message</p>
-            </div>
-            <div class="message__item__left">
-                <p>Message</p>
-            </div>
+
         </div>
         <div class="message__input">
-            <input type="text" placeholder="Type a message">
+            <input id="inputRoom" type="text" placeholder="Type a message">
         </div>
         
     </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const messageBody = document.querySelector(".message__body");
+    // create a div class message__item with a p tag inside with the text coucou
+    function addMessage(text){
+        const messageItem = document.createElement("div");
+        messageItem.classList.add("message__item");
+        const messageText = document.createElement("p");
+        messageText.innerText = text;
+        messageItem.appendChild(messageText);
+        messageBody.appendChild(messageItem);
+    }
+    // get the input and when I click on enter I want to add a message
+    const socket = io();
+
+    /* function joinRoom() {
+        const room = document.getElementById('room').value;
+        socket.emit('join', room);
+    } */
+    socket.emit('join', "room1");
+
+    /* function sendMessage() {
+        const message = document.getElementById('message').value;
+        const room = document.getElementById('room').value;
+        socket.emit('roomMessage', room, message);
+    } */
+
+    socket.on('message', (message) => {
+        addMessage(message);
+    });
+
+    const inputRoom = document.querySelector("#inputRoom");
+    inputRoom.addEventListener("keyup", (e) => {
+        if(e.key === "Enter"){
+            socket.emit("roomMessage", "room1", e.target.value);
+            e.target.value = "";
+        }
+    })
+</script>
 </html>
