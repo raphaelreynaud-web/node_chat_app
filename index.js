@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.get("/test", (req, res) => {
-  ejs.render("test")
+  res.render("test");
 })
 
 io.on('connection', (socket) => {
