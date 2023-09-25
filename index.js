@@ -2,14 +2,24 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+let ejs = require('ejs');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+app.use(express.static(__dirname + '/public'));
+// view engine setup
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/views/index.html');
 });
+
+app.get("/test", (req, res) => {
+  ejs.render("test")
+})
 
 io.on('connection', (socket) => {
   console.log('A user connected');
