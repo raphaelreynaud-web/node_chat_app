@@ -1,80 +1,72 @@
-/* Reset some default browser styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Style the chat container */
-.chat-container {
-    max-width: 400px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-}
-
-/* Style the chat header */
-.chat-header {
-    background-color: #075e54;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
+body {
     display: flex;
-    align-items: center;
 }
 
-.chat-header img {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+.sidebar {
+    position: fixed;
+    width: 400px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Behind the navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: #111B21;
 }
 
-/* Style the chat messages */
-.chat-messages {
-    padding: 20px;
-    min-height: 300px;
-    max-height: 500px;
-    overflow-y: auto;
+.sidebar__options {
+    height: 70px;
+    width: 100%;
+    background-color: #202C33;
 }
 
-.message {
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    max-width: 70%;
+.sidebar__search {
+    height: 50px;
+    width: 100%;
+    margin-top: 10px;
 }
 
-.received {
-    background-color: #f1f0f0;
-    align-self: flex-start;
-}
-
-.sent {
-    background-color: #DCF8C6;
-    align-self: flex-end;
-}
-
-/* Style the chat input */
-.chat-input {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-right: 10px;
-}
-
-.chat-input button {
-    background-color: #075e54;
-    color: #fff;
+.sidebar__search input[type="search"] {
+    background-color: #202C33;
     border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 90%;
+    height: 30px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-left: 15px;
+    border-radius: 10px;
+}
+
+.sidebar__conversations {
+    height: calc(100% - 120px);
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.sidebar__conversations__item {
+    height: 60px;
+    width: 97%;
+    padding: 5px;
     cursor: pointer;
+    border-bottom: #202C33 1px solid;
+}
+
+.sidebar__conversations__item:hover {
+    background-color: #202C33;
+}
+
+.sidebar__conversations__item h3 {
+    color: #fff;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.sidebar__conversations__item p {
+    color: #fff;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.content {
+    margin-left: 400px;
 }
