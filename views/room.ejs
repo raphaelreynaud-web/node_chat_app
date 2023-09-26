@@ -13,6 +13,9 @@
     <div class="content">
         <div class="message__header">
             <h3 id="message__header-name"><%= roomId %></h3>
+            <button id="addMember">
+                Add member
+            </button>
         </div>
         <div class="message__body">
 
@@ -44,7 +47,7 @@
         const room = document.getElementById('room').value;
         socket.emit('join', room);
     } */
-    socket.emit('join', "room1");
+    socket.emit('join', roomId);
 
     /* function sendMessage() {
         const message = document.getElementById('message').value;
@@ -59,7 +62,7 @@
     const inputRoom = document.querySelector("#inputRoom");
     inputRoom.addEventListener("keyup", (e) => {
         if(e.key === "Enter"){
-            socket.emit("roomMessage", "room1", e.target.value);
+            socket.emit("roomMessage", roomId, e.target.value);
             e.target.value = "";
         }
     })

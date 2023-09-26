@@ -8,7 +8,7 @@ exports.create = (req, res) => {
     // Validate request
     // Create a Room
     const room = new Room({
-        users : [req.body.userId]
+        users : [req.user],
     });
 
     // Save Room in the database

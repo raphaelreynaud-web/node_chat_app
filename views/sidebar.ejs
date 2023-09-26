@@ -10,7 +10,6 @@
     <div class="sidebar__conversations">
         <!-- <div class="sidebar__conversations__item">
             <h3>Name</h3>
-            <p>Message</p>
         </div> -->
     </div>
 </aside>
@@ -19,13 +18,34 @@
     var addRoom = document.querySelector("#add-room");
     var sidebarConversations = document.querySelector(".sidebar__conversations");
     
+    function addConversation(name, id){
+        // create a div class sidebar__conversations__item with an h3 and an p inside
+        // append it to sidebarConversations
+        var sidebarConversations = document.querySelector(".sidebar__conversations");
+        sidebarConversations.innerHTML += `
+            <a href="/room/${id}" class="sidebar__conversations__item id="${id}">
+                <h3>${name}</h3>
+            </a>
+        `;
+    }
+    
     fetch("http://localhost:3000/api/rooms", {
         method : "GET",
         headers : {
             "x-auth-token" : localStorage.getItem("token"),
         }
     }).then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => {
+        if (data){
+            rooms = data;
+            data.forEach(room => {
+                addConversation(room.name, room._id);
+            })
+        }
+    })
+
+
+    
 
     addRoom.addEventListener("click", () => {
         fetch("http://localhost:3000/api/rooms", {
@@ -38,18 +58,19 @@
                 "x-auth-token" : localStorage.getItem("token"),
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.status == 200){
+                return res.json();
+            }
+            else {
+                throw new Error("Error: " + res.status);
+            }
+        })
         .then(data => {
-            if (data.success){
-                rooms.push(data.room);
-                rooms.forEach(room => {
-                    sidebarConversations.innerHTML += `
-                        <div class="sidebar__conversations__item">
-                            <h3>${room.name}</h3>
-                            <p>Message</p>
-                        </div>
-                    `;
-                })
+            if (data){
+                console.log(data)
+                rooms.push(data);
+                addConversation(data.name, data._id);
             }
         })
     })
