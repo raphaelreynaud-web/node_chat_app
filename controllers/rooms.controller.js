@@ -63,7 +63,11 @@ exports.update = (req, res) => {
     // Update room
     Room.findByIdAndUpdate(req.params.roomId, {
         name: req.body.name
-    }, {new: true})
+    }).then(room => {
+        room.save();
+        console.log("room updated");
+    })
+
 }
 
 // Delete a room with the specified roomId in the request

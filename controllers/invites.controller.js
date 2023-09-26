@@ -1,6 +1,7 @@
 // create controller for invites table with create,read and delete methods
 
 const Invites = require('../models/invites.model.js');
+const Rooms = require('../models/rooms.model.js');
 const crypto = require('crypto');
 // Create and Save a new Invite
 exports.create = (req, res) => {
@@ -38,7 +39,29 @@ exports.findOne = (req, res) => {
                 message: "Invite not found with id " + req.params.inviteid
             });            
         }
-        res.send(invite);
+        // find room with roomId
+        Rooms.findOne({_id : invite.roomId})
+        .then(room => {
+            if(!room) {
+                return res.status(404).send({
+                    message: "Room not found with id " + invite.roomId
+                });            
+            }
+            // add req.user to the users array in room
+            room.users.push(req.user);
+            // save room
+            room.save()
+            res.send(room);
+        }).catch(err => {
+            if(err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Room not found with id " + invite.roomId
+                });                
+            }
+            return res.status(500).send({
+                message: "Error retrieving room with id " + invite.roomId
+            });
+        });
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({

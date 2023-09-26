@@ -1,7 +1,10 @@
 <aside class="sidebar">
     <div class="sidebar__options">
         <button id="add-room">
-            Add room
+            Create Room
+        </button>
+        <button id="join-room">
+            Join Room
         </button>
     </div>
     <div class="sidebar__search">
@@ -73,5 +76,31 @@
                 addConversation(data.name, data._id);
             }
         })
+    })
+
+    var joinRoom = document.querySelector("#join-room");
+    joinRoom.addEventListener("click", () => {
+        var invite_link = prompt("Enter the link of the invite");
+        fetch(invite_link, {
+            // header with token
+            headers : {
+                "x-auth-token" : localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.status == 200){
+                return res.json();
+            }
+            else {
+                throw new Error("Error: " + res.status);
+                alert("Error: " + res.status);
+            }
+        })
+        .then(data => {
+            if (data){
+                console.log(data)
+                // reload the page
+            }
+        })
+        .then(() => window.location.reload())
     })
 </script>

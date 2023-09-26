@@ -6,6 +6,7 @@ let ejs = require('ejs');
 const mongoose = require('mongoose');
 const roomsRouter = require('./routes/rooms.route');
 const usersRouter = require('./routes/users.route');
+const invitesRouter = require('./routes/invites.route');
 
 mongoose.connect('mongodb://localhost:27017/chat', { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connected to MongoDB...'));
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/rooms', roomsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/invites', invitesRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
@@ -57,6 +59,11 @@ io.on('connection', (socket) => {
   // Handle room messages
   socket.on('roomMessage', (room, message) => {
     io.to(room).emit('message', message);
+  });
+
+  socket.on("roomNameChanged", (room, name) => {
+    io.to(room).emit("changeRoomName", name);
+    console.log(`Room name changed to ${name}`);
   });
 
   // Handle disconnect
