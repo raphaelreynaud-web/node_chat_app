@@ -91,3 +91,25 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+exports.leaveRoom = (req, res) => {
+    Room.findById(req.params.roomId)
+    .then(room => {
+        if(!room) {
+            return res.status(404).send({
+                message: "Room not found with id " + req.params.roomId
+            });            
+        }
+        room.users.pull(req.user);
+        room.save();
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Room not found with id " + req.params.roomId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving room with id " + req.params.roomId
+        });
+    });
+};

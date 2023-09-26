@@ -37,6 +37,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var roomId = "<%= roomId %>";
+    var roomExist = true;
 
     fetch("http://localhost:3000/api/rooms/" + roomId, {
         method: "GET",
@@ -44,11 +45,21 @@
             "Content-Type": "application/json",
             "x-auth-token": localStorage.getItem("token")
         }
-    }).then(res => res.json()).then(data => {
+    })
+    .then(res => {
+        if (res.ok){
+            return res.json();
+        }
+        else{
+            window.location.href = "/home";
+            roomExist = false;
+        }
+    })
+    .then(data => {
         document.querySelector("#message__header-name").innerText = data.name;
-    }).catch(err => {
+    })
+    .catch(err => {
         console.log(err);
-
     })
 
     const messageBody = document.querySelector(".message__body");
@@ -120,7 +131,19 @@
     })
 
     leaveRoom.addEventListener("click", () => {
-        socket.emit("leaveRoom", roomId);
+        fetch("http://localhost:3000/api/rooms/leave/" + roomId, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }).then(res => res.json()).then(data => {
+            console.log(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        window.location.href = "/home";
     })
 </script>
 </html>
