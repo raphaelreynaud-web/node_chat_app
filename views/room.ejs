@@ -12,7 +12,7 @@
     <%- include("sidebar")  %>
     <div class="content">
         <div class="message__header">
-            <h3 id="message__header-name"></h3>
+            <h3 id="message__header-name"><%= roomId %></h3>
         </div>
         <div class="message__body">
 
@@ -25,8 +25,8 @@
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    const messageHeaderName = document.querySelector("#message__header-name");
-    messageHeaderName.innerText = roomId;
+    var roomId = "<%= roomId %>";
+    console.log(roomId);
     const messageBody = document.querySelector(".message__body");
     // create a div class message__item with a p tag inside with the text coucou
     function addMessage(text){
