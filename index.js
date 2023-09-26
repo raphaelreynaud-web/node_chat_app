@@ -29,8 +29,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/test", (req, res) => {
-  res.render("test");
+app.get("/home", (req, res) => {
+  res.render("home");
 })
 
 app.get("/login", (req, res) => {
