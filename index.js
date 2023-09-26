@@ -7,7 +7,8 @@ const mongoose = require('mongoose');
 const roomsRouter = require('./routes/rooms.route');
 const usersRouter = require('./routes/users.route');
 
-mongoose.connect('mongodb://localhost:27017/chat', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/chat', { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('Connected to MongoDB...'));
 
 const app = express();
 const server = http.createServer(app);

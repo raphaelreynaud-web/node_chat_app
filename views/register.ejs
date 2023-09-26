@@ -55,7 +55,7 @@
 <body>
     <div class="container">
         <h2>Register</h2>
-        <form action="#" method="post">
+        <form method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -70,4 +70,29 @@
         </form>
     </div>
 </body>
+<script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.querySelector("#username").value;
+        const password = document.querySelector("#password").value;
+        fetch("http://localhost:3000/api/users/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({username, password})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.token){
+                localStorage.setItem("token", data.token);
+                window.location.href = "/room";
+            }
+            else {
+                alert("Error: " + data.message);
+            }
+        })
+    })
+</script>
 </html>
