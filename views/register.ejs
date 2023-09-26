@@ -71,6 +71,7 @@
     </div>
 </body>
 <script>
+    if (localStorage.getItem("token")) window.location.href = "/home";
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
         e.preventDefault();

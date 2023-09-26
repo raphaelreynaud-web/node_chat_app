@@ -1,6 +1,8 @@
 <aside class="sidebar">
     <div class="sidebar__options">
-
+        <button id="add-room">
+            Add room
+        </button>
     </div>
     <div class="sidebar__search">
         <input type="search" placeholder="Search or start a new conversation">
@@ -12,3 +14,43 @@
         </div> -->
     </div>
 </aside>
+<script>
+    var rooms = [];
+    var addRoom = document.querySelector("#add-room");
+    var sidebarConversations = document.querySelector(".sidebar__conversations");
+    
+    fetch("http://localhost:3000/api/rooms", {
+        method : "GET",
+        headers : {
+            "x-auth-token" : localStorage.getItem("token"),
+        }
+    }).then(res => res.json())
+    .then(data => console.log(data))
+
+    addRoom.addEventListener("click", () => {
+        fetch("http://localhost:3000/api/rooms", {
+            method : "POST",
+            // header with token
+            body : JSON.stringify({
+                name : "Room 1"
+            }),
+            headers : {
+                "x-auth-token" : localStorage.getItem("token"),
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success){
+                rooms.push(data.room);
+                rooms.forEach(room => {
+                    sidebarConversations.innerHTML += `
+                        <div class="sidebar__conversations__item">
+                            <h3>${room.name}</h3>
+                            <p>Message</p>
+                        </div>
+                    `;
+                })
+            }
+        })
+    })
+</script>

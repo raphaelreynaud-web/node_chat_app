@@ -25,7 +25,8 @@ exports.create = (req, res) => {
 // Retrieve and return all rooms from the database.
 
 exports.findAll = (req, res) => {
-    Room.find()
+    // find the rooms with the user id inside the users array
+    Room.find({users : req.user})
     .then(rooms => {
         res.send(rooms);
     }).catch(err => {
