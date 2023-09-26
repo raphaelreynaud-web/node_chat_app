@@ -13,9 +13,17 @@
     <div class="content">
         <div class="message__header">
             <h3 id="message__header-name"><%= roomId %></h3>
-            <button id="addMember">
-                Add member
-            </button>
+            <div class="message__header__buttons">
+                <button id="addMember">
+                    Add member
+                </button>
+                <button id="changeRoomName">
+                    Change room name
+                </button>
+                <button id="leaveRoom">
+                    Leave room
+                </button>
+            </div>
         </div>
         <div class="message__body">
 
@@ -40,20 +48,10 @@
         messageItem.appendChild(messageText);
         messageBody.appendChild(messageItem);
     }
-    // get the input and when I click on enter I want to add a message
+
     const socket = io();
 
-    /* function joinRoom() {
-        const room = document.getElementById('room').value;
-        socket.emit('join', room);
-    } */
     socket.emit('join', roomId);
-
-    /* function sendMessage() {
-        const message = document.getElementById('message').value;
-        const room = document.getElementById('room').value;
-        socket.emit('roomMessage', room, message);
-    } */
 
     socket.on('message', (message) => {
         addMessage(message);
@@ -65,6 +63,23 @@
             socket.emit("roomMessage", roomId, e.target.value);
             e.target.value = "";
         }
+    })
+
+    const addMember = document.querySelector("#addMember");
+    const changeRoomName = document.querySelector("#changeRoomName");
+    const leaveRoom = document.querySelector("#leaveRoom");
+
+    addMember.addEventListener("click", () => {
+        const username = prompt("Enter the username of the user you want to add");
+    })
+
+    changeRoomName.addEventListener("click", () => {
+        const name = prompt("Enter the new name of the room");
+        socket.emit("changeRoomName", roomId, name);
+    })
+
+    leaveRoom.addEventListener("click", () => {
+        socket.emit("leaveRoom", roomId);
     })
 </script>
 </html>
