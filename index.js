@@ -61,9 +61,9 @@ io.on('connection', (socket) => {
     io.to(room).emit('message', message);
   });
 
-  socket.on("roomNameChanged", (room, name) => {
-    io.to(room).emit("changeRoomName", name);
-    console.log(`Room name changed to ${name}`);
+  socket.on("nameChanged", (room, name) => {
+    io.to(room).emit("roomChanged", name);
+    console.log("name changed");
   });
 
   // Handle disconnect

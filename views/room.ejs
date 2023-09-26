@@ -70,7 +70,7 @@
         addMessage(message);
     });
 
-    socket.on('changeRoomName', (name) => {
+    socket.on('roomChanged', (name) => {
         document.querySelector("#message__header-name").innerText = name;
     })
 
@@ -107,7 +107,7 @@
     changeRoomName.addEventListener("click", () => {
         const name = prompt("Enter the new name of the room");
         fetch("http://localhost:3000/api/rooms/" + roomId, {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "x-auth-token": localStorage.getItem("token")
@@ -116,7 +116,7 @@
                 name: name
             })
         })
-        socket.emit("changeRoomName", roomId, name);
+        socket.emit("nameChanged", roomId, name);
     })
 
     leaveRoom.addEventListener("click", () => {
