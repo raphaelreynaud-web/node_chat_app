@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="video-grid">
+
+    </div>
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script>
+        var roomId = "<%= roomId %>";
+
+        var peer = new Peer(roomId ,{
+            host: 'localhost',
+            port: 9000,
+            path: '/peerjs'
+        });
+
+        var conn = peer.connect(roomId);
+
+        conn.on('open', function(){
+            conn.send('hi!');
+        });
+
+        peer.on('connection', function(conn) {
+            conn.on('data', function(data){
+                // Will print 'hi!'
+                console.log(data);
+            });
+        });
+
+        peer.on('open', function(id) {
+            console.log('My peer ID is: ' + id);
+        });
+
+        peer.on('call', function(call) {
+            navigator.mediaDevices.getUserMedia({video: true, audio: true})
+            .then(function(stream) {
+                call.answer(stream); // Answer the call with an A/V stream.
+                call.on('stream', function(remoteStream) {
+                    // Show stream in some video/canvas element.
+                    var video = document.createElement('video');
+                    video.srcObject = remoteStream;
+                    video.setAttribute("autoplay", "");
+                    video.setAttribute("playsinline", "");
+                    video.setAttribute("muted", "");
+                    video.setAttribute("controls", "");
+                    document.querySelector('.video-grid').appendChild(video);
+                    video.play();
+                });
+            })
+            .catch(function(err) {
+                console.log('Failed to get local stream' ,err);
+            });
+        });
+
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        getUserMedia({video: true, audio: true}, function(stream) {
+            var call = peer.call(roomId, stream);
+            call.on('stream', function(remoteStream) {
+                // Show stream in some video/canvas element.
+                var video = document.createElement('video');
+                video.srcObject = remoteStream;
+                video.setAttribute("autoplay", "");
+                video.setAttribute("playsinline", "");
+                video.setAttribute("muted", "");
+                video.setAttribute("controls", "");
+                document.querySelector('.video-grid').appendChild(video);
+                video.play();
+            });
+        }, function(err) {
+            console.log('Failed to get local stream' ,err);
+        });
+
+    </script>
+</body>
+</html>

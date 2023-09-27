@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const roomsRouter = require('./routes/rooms.route');
 const usersRouter = require('./routes/users.route');
 const invitesRouter = require('./routes/invites.route');
-const { ExpressPeerServer } = require("peer");
+const { PeerServer } = require("peer");
 
 mongoose.connect('mongodb://localhost:27017/chat', { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connected to MongoDB...'));
@@ -78,14 +78,11 @@ io.on('connection', (socket) => {
 });
 
 
-const appserver = server.listen(3000, () => {
+server.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
 });
 
-const peerServer = ExpressPeerServer(appserver, {
-  debug: true,
-  path: "/peerjs",
-})
+const peerServer = PeerServer({ port: 9000, path: "/peerjs" })
 
 peerServer.on("connection", (client) => {
   console.log("peer connected", client.id);
@@ -95,4 +92,3 @@ peerServer.on("disconnect", (client) => {
   console.log("peer disconnected", client.id);
 })
 
-app.use("/peerjs", peerServer);
