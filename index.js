@@ -28,11 +28,7 @@ app.use('/api/rooms', roomsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/invites', invitesRouter);
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html');
-});
-
-app.get("/home", (req, res) => {
+app.get("/", (req, res) => {
   res.render("home");
 })
 

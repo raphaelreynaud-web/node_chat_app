@@ -61,5 +61,9 @@
             e.target.value = "";
         }
     })
+
+    if (localStorage.getItem("token") === null){
+        window.location.href = "/login";
+    }
 </script>
 </html>
