@@ -41,7 +41,7 @@ body {
 }
 
 .sidebar__conversations {
-    height: calc(100% - 120px);
+    height: calc(100% - 180px);
     width: 100%;
     overflow-y: scroll;
 }
@@ -94,6 +94,8 @@ body {
 .message__header h3 {
     color: #fff;
     font-size: 18px;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .message__header__buttons {
@@ -173,7 +175,7 @@ body {
 }
 
 /* Design button for adding a romm and joining a room*/
-#add-room, #join-room {
+#add-room, #join-room, #addMember, #changeRoomName, #leaveRoom {
     background-color: #202C33;
     border: none;
     border-radius: 10px;
@@ -181,4 +183,15 @@ body {
     color: #fff;
     font-size: 14px;
     cursor: pointer;
+}
+
+#logout {
+    background-color: #202C33;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 20px;
 }

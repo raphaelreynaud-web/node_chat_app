@@ -15,12 +15,16 @@
             <h3>Name</h3>
         </div> -->
     </div>
+    <button id="logout">
+        Logout
+    </button>
 </aside>
 <script>
     var rooms = [];
     var addRoom = document.querySelector("#add-room");
     var sidebarConversations = document.querySelector(".sidebar__conversations");
     var sidebarSearchBar = document.querySelector("#sidebar__search--bar");
+    var logout = document.querySelector("#logout");
 
     function addConversation(name, id){
         // create a div class sidebar__conversations__item with an h3 and an p inside
@@ -111,5 +115,10 @@
                 addConversation(room.name, room._id);
             })
         }
+    })
+
+    logout.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
     })
 </script>
