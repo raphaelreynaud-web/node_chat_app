@@ -1,14 +1,14 @@
 <aside class="sidebar">
     <div class="sidebar__options">
         <button id="add-room">
-            Create Room
+            Add Room
         </button>
         <button id="join-room">
             Join Room
         </button>
     </div>
     <div class="sidebar__search">
-        <input type="search" placeholder="Search or start a new conversation">
+        <input id="sidebar__search--bar" type="search" placeholder="Search or start a new conversation">
     </div>
     <div class="sidebar__conversations">
         <!-- <div class="sidebar__conversations__item">
@@ -20,7 +20,8 @@
     var rooms = [];
     var addRoom = document.querySelector("#add-room");
     var sidebarConversations = document.querySelector(".sidebar__conversations");
-    
+    var sidebarSearchBar = document.querySelector("#sidebar__search--bar");
+
     function addConversation(name, id){
         // create a div class sidebar__conversations__item with an h3 and an p inside
         // append it to sidebarConversations
@@ -46,9 +47,6 @@
             })
         }
     })
-
-
-    
 
     addRoom.addEventListener("click", () => {
         fetch("http://localhost:3000/api/rooms", {
@@ -102,5 +100,16 @@
             }
         })
         .then(() => window.location.reload())
+    })
+
+    sidebarSearchBar.addEventListener("keyup", (e) => {
+        if (e.key === "Enter"){
+            var search = e.target.value;
+            var filteredRooms = rooms.filter(room => room.name.includes(search));
+            sidebarConversations.innerHTML = "";
+            filteredRooms.forEach(room => {
+                addConversation(room.name, room._id);
+            })
+        }
     })
 </script>
